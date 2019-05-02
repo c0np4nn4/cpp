@@ -1,7 +1,3 @@
-/* 미완성된 코드입니다!!! 
-   해결해야 할 점 : Assignment operator를 만들어서 Shallow Copy가 일어나지 않게 해야함!
-*/
-
 #include <iostream>
 
 using namespace std;
@@ -20,7 +16,7 @@ public:
 	}
 	
 	
-	~Matrix() { 
+	~Matrix() { 		// destructor
 		for( int i = 0; i < column; i++ ){
 			delete [] *(values + i);
 		}
@@ -29,9 +25,12 @@ public:
 		
 
 	Matrix(const Matrix& m) {
-		this->row = m.row;
-		this->column = m.column;
-		this->values = m.values;		// ?
+		
+		*this = m;
+		
+//		this->row = m.row;
+//		this->column = m.column;
+//		this->values = m.values;		// copy constructor
 	}
 
 	void set(const int row, const int column, const int value) {
@@ -75,6 +74,28 @@ public:
 		}
 		return tmpMatrix;
 	}
+	
+	Matrix& operator = (const Matrix& another) {
+		for( int i = 0; i < column; i++ ){		// memory free
+			delete [] *(values + i);
+		}
+		delete [] values;
+		this->row = another.row;
+		this->column = another.column;
+		values = new int*[row];					// memory allocate
+		for( int i = 0; i < column; i++ ) {
+			*(values + i) = new int[2];
+		}
+		
+		for (int i = 0; i < row; i++) {			// value input
+			for (int j = 0; j < column; j++) {
+				values[i][j] = another.values[i][j];
+			}
+		}
+		
+		return *this;
+	}
+		
 };
 
 istream& operator >> (istream& is, Matrix& m) {
@@ -106,7 +127,7 @@ int main() {
 
 	Matrix m3(m1 + m2);
 	Matrix m4(2, 2);
-
+	
 	m4 = m3 * 10;
 
 	cout << m3 << endl << m4 << endl;
