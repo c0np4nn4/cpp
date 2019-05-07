@@ -1,0 +1,82 @@
+
+
+
+Stack s1 = s2;
+Stack s1(s2);		// 둘은 같음
+
+Stack s3;
+s3 = s2;			// 이미 존재하는 S3에 s2를 복사하는 것.
+			// 따라서, 이미 존재하는 s3의 메모리를 삭제해줘야 함. (shallow copy?)
+
+/* 자신이 갖고 있는 메모리가 할당되지 않았을 때, --> 삭제할 필요 없이 할당
+   좌측의 객체에 이미 메모리가 할당되어 있을 때, --> 삭제하고 다시 할당 */
+*this 로 객체를 반환해야 함.
+
+/* 새로 메모리 공간을 할당받는 객체에 대해서는 copy constructor , assignment, destructor 필요 없음. */
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+in param --> const &
+out param --> ____() const { };
+
+/**
+  @ Inheritance
+	protected, private은 별로 안 좋음.
+	public을 쓰자.
+	
+	상속을 받는다 <-- subclass에 superclass의 멤버들이 있다고 생각하면 됨.
+			derived-class	base-class
+
+	subclass의 client가 superclass로부터 물려받은 것들에 접근함.
+	상속받더라도, superclass의 private member들에 대해서는 직접 접근할 수 없다.
+	-->	protected member를 superclass에 선언하면 subclass에서 직접 접근 가능함. ( '나와 subclass만이 접근 가능함' )
+		하지만... 쓰지 않는 것이 좋음.
+
+	* visibility : private, public, protected
+
+	subclass의 생성자에서
+	superclass의 생성자를 호출하게 됨.
+	
+	* member initializer list를 써야만 할 때
+	1) 자신의 데이터 멤버가 object일 때	--> 눈에 보이진 않지만, default로 생성함
+	2) const인 경우, reference인 경우
+	3) subclass에서 superclass의 생성자를 호출할 때
+
+
+	* scope operator ::
+	 같은 이름이 존재할 때, scope operator를 사용하여 해결할 수 있다.
+	 default는 가까이 있는 것...
+	 
+
+	* 이름 충돌은 없어야 함.
+	  변수의 이름이 같다는 것은 문제가 있다는 것....
+
+	* 상속 클래스 간의 overloading은 적용되지 않음... scope operator를 써줘야 함.
+
+	* parent class 의 생성자 호출 --> member 순서로 생성자 호출 --> 생성자 본문( body ) 실행
+	  명시적으로 적어주지 않는다면 눈에 보이지 않는 생성자들의 호출이 일어날 수도 있다.
+
+	* Destructor는 메모리가 회수되기 전에 호출됨. Destructor 호출 --> 메모리 회수
+	  Destructor 필요 없는 코드 ( page 16 ) ????
+
+	* Destructor 호출 시점
+	1) Block 내에서 --> Block 나설 때
+	2) New를 통해서 --> delete
+	3) 전역변수 --> 프로그램이 종료될 때
+
+	* subclass의 destructor가 호출될 때 superclass도 destrutor가 호출 됨.
+
+	* constructor -->   [ super -> sub ]
+	  destructor --->   [ sub -> super ]
+
+
+	* 소멸자는 생성자 호출 순서와 정반대로 진행된다고 생각하면 됨.
+
+	* 생성자와 소멸자가 필요할 때 만들어주면 됨.
+
+	* assignment operator ( = ) 는 좌측의 타입을 기준으로, 우측의 데이터를 할당받는데
+	  우측에 더 많은 정보가 있을 때, 허용됨.
+	  좌측의 subclass가 우측에 올 경우 '가능'하지만, '권장'되지는 않음.
+	  만약, 좌측의 superclass가 우측에 올 경우에는 안전하지 않은 코드가 됨.
+
+
+*/
