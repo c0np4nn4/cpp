@@ -13,11 +13,16 @@ public:
 	Person(const string& theName, int theAge = 1, const string& theAddress = "" )
 		: name(theName) { this->age = theAge; this->address = theAddress; }
 	string getName() const { return this->name; }
-	void rename(const string& theName) : name(theName) { }
+	void rename(const string& theName) { name = theName; }
 	int getAge() const { return this->age; }
 	void increaseAge() { age++; }
 	string getAddress() const { return this->address; }
 	void moveTo(const string& theAddress) { address = theAddress; }
+	void print() {
+		cout << "ÀÌ¸§: " << name << endl;
+		cout << "³ªÀÌ: " << age << endl;
+		cout << "ÁÖ¼Ò: " << address << endl;
+	}
 };
 
 class Student : public Person {
@@ -29,7 +34,12 @@ public:
 	string getSchoolName() const { return this->schoolName; }
 	void setSchoolName(const string& theSchoolName) { this->schoolName = theSchoolName; } 
 	Grade getGrade() const { return this->grade; }
-	void upGrade() { grade++; }
+	void upGrade() { grade = static_cast<Grade>( 1 + static_cast<int>(this->grade)); }
+	void print() {
+		Person::print();
+		cout << "ÇÐ±³: " << schoolName << endl;
+		cout << "ÇÐ³â: " << grade << endl;
+	}
 };
 
 int main() {
@@ -39,9 +49,14 @@ int main() {
 	p2.moveTo("Seoul");
 
 	Student s1("Tom"), s2("Jane");
-	s1.setSchoolName("í•œêµ­ëŒ€í•™êµ");
+	s1.setSchoolName("KoreaUniv");
 	s2.upGrade();
 
 	s1.rename("Harrison");
 	s2.increaseAge();
+	
+	
+	s1.print();
+	cout << endl;
+	s2.print();
 }
